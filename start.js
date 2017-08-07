@@ -37,6 +37,10 @@ var debug = process.execArgv.find(function (e) {  return e.startsWith('--debug')
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+// Load settings 
+var SettingsHelper = require("./lib/SettingsHelper.js");
+var settingsHelper = new SettingsHelper();
+
 if (debug) {
     console.log("Start with debug");
     start(true);
@@ -64,6 +68,7 @@ function startWithoutDebug() {
                 console.log(util.padRight("", maxWidth, ' ').bgGreen.white.bold);
                 console.log();
 
+                console.log('(exit) debugHost: ' + debugHost);
                 debugHost.Start(debugPort);
                 debugPort++;
             }
@@ -86,7 +91,14 @@ function startWithoutDebug() {
                 });
                 var DebugHost = require("microservicebus.core").DebugClient;
 
-                debugHost = new DebugHost();
+                try {
+                    debugHost = new DebugHost(settingsHelper);
+                }
+                catch (exx)
+                {
+                    console.log("ERROR: " + exx);
+                }
+                console.log('(message1) debugHost: ' + debugHost);
                 debugHost.OnReady(function () {
 
                 });
@@ -114,11 +126,9 @@ function startWithoutDebug() {
                         cluster.workers[id].process.disconnect();
                         cluster.workers[id].process.kill('SIGTERM');
                     }
-
                 });
-                
             }
-            
+            console.log('(message) debugHost: ' + debugHost);
         });
     }
 
@@ -173,10 +183,6 @@ function start(d) {
 
             }
         });
-
-    // Load settings 
-    var SettingsHelper = require("./lib/SettingsHelper.js");
-    var settingsHelper = new SettingsHelper();
     
     var MicroServiceBusHost = require("./lib/microServiceBusHost.js");
     var microServiceBusHost = new MicroServiceBusHost(settingsHelper);
