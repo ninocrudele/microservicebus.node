@@ -55,7 +55,7 @@ function startWithoutDebug() {
 
         cluster.on('exit', function (worker, code, signal) {
             worker = cluster.fork();
-
+            console.log('cluster exit');
             if (cluster.settings.execArgv.find(function (e) { return e.startsWith('--debug'); }) !== undefined) {
 
                 console.log();
@@ -77,6 +77,7 @@ function startWithoutDebug() {
         });
 
         cluster.on('message', function (msg) {
+            console.log('cluster got message');
             if (debugHost == undefined) {
                 fixedExecArgv.push('--debug-brk');
 
