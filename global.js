@@ -14,6 +14,6 @@ console.log('packagePath: ' + packagePath);
 require('app-module-path').addPath(packagePath);
 require('module').globalPaths.push(packagePath);
 
-console.log("PATHS: %s", process.env);
+console.log("ENV: %s", JSON.stringify(process.env));
 
 require("./start.js");

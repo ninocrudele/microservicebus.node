@@ -193,8 +193,6 @@ function start(d) {
     checkVersion("microservicebus.core")
         .then(function (rawData) {
 
-            console.log(JSON.stringify(process.argv, null, 4).bgBlue);
-            
             var path = require("path");
             var packageFile = path.resolve(rootFolder, 'node_modules/microservicebus.core/package.json');
 
@@ -202,7 +200,7 @@ function start(d) {
             if (process.argv[1].endsWith("startsnap")) {
                 console.log("Loading microservicebus.core/package.json for snap");
                 var homeDirectory = ".";
-                packageFile = path.resolve(homeDirectory, "node_modules/microservicebus.core/package.json");
+                packageFile = path.resolve(os.userInfo().homedir, 'node_modules/microservicebus.core/package.json');
             }
 
             console.log("packageFile: ".bgBlue + packageFile.bgBlue);
