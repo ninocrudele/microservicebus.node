@@ -198,20 +198,17 @@ function start(d) {
 
             // Check if node is started as Snap
             if (process.argv[1].endsWith("startsnap")) {
-                console.log("Loading microservicebus.core/package.json for snap");
+                //console.log("Loading microservicebus.core/package.json for snap");
                 packageFile = path.resolve(require('os').userInfo().homedir, 'node_modules/microservicebus.core/package.json');
             }
-
-            console.log("packageFile: ".bgBlue + packageFile.bgBlue);
+            
 
             var corePjson;
 
             if (fs.existsSync(packageFile)) {
                 corePjson = require(packageFile);
             }
-            else {
-                console.log("packageFile not found".red);
-            }
+
             var latest = rawData['dist-tags'].beta;
 
             if (corePjson === undefined || util.compareVersion(corePjson.version, latest) < 0) {
@@ -224,7 +221,6 @@ function start(d) {
                 console.log();
                 console.log("Start installing core".bgRed.white);
                 
-                //util.addNpmPackage("microservicebus.core@beta", true, function (err) {
                 util.addNpmPackage("microservicebus.core@beta", true, function (err) {
                     if (err) {
                         console.log("Unable to install core update".bgRed.white);
